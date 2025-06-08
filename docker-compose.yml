@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    image: vibe2-server:latest
+    ports:
+      - "3005:3005"
+    env_file:
+      - ./server/.env
+
+  client:
+    build:
+      context: .
+      args:
+        - REACT_APP_WS_URL=ws://ws-server-candaceproject.apps.jcloud.jahrends.com
+        - VITE_WS_URL=ws://ws-server-candaceproject.apps.jcloud.jahrends.com
+    image: vibe2-client:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+    environment:
+      - REACT_APP_WS_URL=ws://ws-server-candaceproject.apps.jcloud.jahrends.com

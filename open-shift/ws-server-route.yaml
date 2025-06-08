@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ws-server
+spec:
+  to:
+    kind: Service
+    name: server
+  port:
+    targetPort: 3005
