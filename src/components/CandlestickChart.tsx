@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createChart, ColorType, CandlestickSeries } from "lightweight-charts";
 import type { UTCTimestamp } from "lightweight-charts";
+import { wsUrl } from "../utils/websocket";
 
 interface CandlestickChartProps {
   ticker: string;
@@ -22,10 +23,6 @@ const CandlestickChart = ({
       wsRef.current.close();
     }
     setData([]);
-    // Use Vite env variable for WebSocket URL
-    const wsUrl =
-      import.meta.env.VITE_WS_URL ||
-      "ws://ws-server-candaceproject.apps.jcloud.jahrends.com";
 
     console.log("got URL =>", wsUrl);
     const ws = new WebSocket(wsUrl);
@@ -110,6 +107,7 @@ const CandlestickChart = ({
   if (!Array.isArray(data) || data.length === 0) {
     return (
       <div
+        data-testid="loading-chart"
         style={{
           position: "fixed",
           top: 0,
@@ -130,8 +128,9 @@ const CandlestickChart = ({
   }
 
   return (
-    <div>
+    <div data-testid="candlestick-chart">
       <div
+        data-testid="chart-header"
         style={{
           padding: "20px 40px",
           backgroundColor: "#252525",
@@ -140,6 +139,7 @@ const CandlestickChart = ({
         }}
       >
         <h1
+          data-testid="chart-title"
           style={{
             margin: 0,
             fontSize: "24px",
@@ -150,6 +150,7 @@ const CandlestickChart = ({
           {ticker} Stock Price
         </h1>
         <p
+          data-testid="chart-subtitle"
           style={{
             margin: "8px 0 0 0",
             fontSize: "14px",
@@ -161,6 +162,7 @@ const CandlestickChart = ({
       </div>
       <div
         ref={chartContainerRef}
+        data-testid="chart-container"
         style={{
           flex: 1,
           padding: "20px",
